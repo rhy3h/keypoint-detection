@@ -9,9 +9,7 @@ import cv2
 import torchvision
 
 class Predictor:
-    def __init__(self, model_path: str, keypoints_classes: object):
-        num_keypoints = len(keypoints_classes)
-        self.keypoints_classes = keypoints_classes
+    def __init__(self, model_path: str, num_keypoints):
         self.model = get_model(num_keypoints, model_path)
 
         if torch.cuda.is_available():
