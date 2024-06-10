@@ -18,7 +18,7 @@ def get_model(num_keypoints, weight_root = None):
     )
 
     if weight_root:
-        last_weight_path = os.path.join(weight_root, 'last_keypoints_rcnn_weights.pth')
+        last_weight_path = os.path.join(weight_root, 'keypoints_rcnn_weights_last.pth')
 
         if os.path.isfile(last_weight_path):
             print('last trained weight found')

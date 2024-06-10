@@ -21,14 +21,14 @@ def start_train(model, data_loader_train, data_loader_test, weight_root = ''):
         evaluate(model, data_loader_test, device)
 
     now = datetime.now().strftime("%m%d_%H%M")
-    weight_file_name = f'{now}_keypoints_rcnn_weights.pth'
+    weight_file_name = f'keypoints_rcnn_weights_{now}.pth'
     weight_path = os.path.join(weight_root, weight_file_name)
 
     # Save model weights after training
     torch.save(model.state_dict(), weight_path)
     print(f"saving weight '{weight_path}'")
 
-    last_weight_file_name = 'last_keypoints_rcnn_weights.pth'
+    last_weight_file_name = 'keypoints_rcnn_weights_last.pth'
     last_weight_path = os.path.join(weight_root, last_weight_file_name)
     shutil.copy(weight_path, last_weight_path)
     print(f"saving weight '{last_weight_path}'")
