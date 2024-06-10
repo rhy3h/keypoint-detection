@@ -21,7 +21,7 @@ def get_model(num_keypoints, weight_root = None):
         last_weight_path = os.path.join(weight_root, 'keypoints_rcnn_weights_last.pth')
 
         if os.path.isfile(last_weight_path):
-            print('last trained weight found')
+            print(f"loading weight '{last_weight_path}'")
             state_dict = torch.load(last_weight_path)
             model.load_state_dict(state_dict)
 
