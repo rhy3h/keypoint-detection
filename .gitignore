@@ -4,6 +4,10 @@
 /transforms.py
 /utils.py
 
+train/
+test/
+weights/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
