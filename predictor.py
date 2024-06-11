@@ -35,7 +35,8 @@ class Predictor:
 
         scores = output[0]['scores'].detach().cpu().numpy()
 
-        high_scores_idxs = np.where(scores > 0.4)[0].tolist()
+        threshold = 0.7
+        high_scores_idxs = np.where(scores > threshold)[0].tolist()
         post_nms_idxs = torchvision.ops.nms(output[0]['boxes'][high_scores_idxs], output[0]['scores'][high_scores_idxs], 0.3).cpu().numpy()
 
         bboxes = []
