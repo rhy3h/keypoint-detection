@@ -1,20 +1,20 @@
 import os
 
 import torch
-import torchvision
 from torchvision.models.detection.rpn import AnchorGenerator
+from torchvision.models.detection.keypoint_rcnn import keypointrcnn_resnet50_fpn, ResNet50_Weights
 
 def get_model(num_keypoints, weight_root = None):
     anchor_generator = AnchorGenerator(
         sizes=(32, 64, 128, 256, 512),
         aspect_ratios=(0.25, 0.5, 0.75, 1.0, 2.0, 3.0, 4.0)
     )
-    model = torchvision.models.detection.keypointrcnn_resnet50_fpn(
-        pretrained=False,
-        pretrained_backbone=True,
-        num_keypoints=num_keypoints,
-        num_classes=2,
-        rpn_anchor_generator=anchor_generator
+    model = keypointrcnn_resnet50_fpn(
+        weights = None,
+        weights_backbone = ResNet50_Weights.DEFAULT,
+        num_keypoints = num_keypoints,
+        num_classes = 2,
+        rpn_anchor_generator = anchor_generator
     )
 
     if weight_root:
