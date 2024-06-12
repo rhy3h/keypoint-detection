@@ -1,16 +1,18 @@
 import os, json, cv2, shutil
 
+import numpy as np
 import torch
 from torch.utils.data import Dataset
 
 from torchvision.transforms import functional as F
 
 class ClassDataset(Dataset):
-    def __init__(self, root):
+    def __init__(self, root, transform = None):
         self.root = root
+        self.transform = transform
         self.imgs_files = sorted(os.listdir(os.path.join(root, "images")))
         self.annotations_files = sorted(os.listdir(os.path.join(root, "annotations")))
-    
+
     def __getitem__(self, idx):
         img_path = os.path.join(self.root, "images", self.imgs_files[idx])
         annotations_path = os.path.join(self.root, "annotations", self.annotations_files[idx])
@@ -23,7 +25,26 @@ class ClassDataset(Dataset):
             bboxes_original = data['bboxes']
             keypoints_original = data['keypoints']
 
-        img, bboxes, keypoints = img_original, bboxes_original, keypoints_original
+            bboxes_labels_original = ['Model' for _ in bboxes_original]
+
+        if self.transform:
+            keypoints_original_flattened = [el[0:2] for kp in keypoints_original for el in kp]
+
+            transformed = self.transform(image=img_original, bboxes=bboxes_original, bboxes_labels=bboxes_labels_original, keypoints=keypoints_original_flattened)
+            img = transformed['image']
+            bboxes = transformed['bboxes']
+            
+            keypoints_transformed_unflattened = np.reshape(np.array(transformed['keypoints']), (-1,2,2)).tolist()
+
+            keypoints = []
+            for o_idx, obj in enumerate(keypoints_transformed_unflattened):
+                obj_keypoints = []
+                for k_idx, kp in enumerate(obj):
+                    obj_keypoints.append(kp + [keypoints_original[o_idx][k_idx][2]])
+                keypoints.append(obj_keypoints)
+
+        else:
+            img, bboxes, keypoints = img_original, bboxes_original, keypoints_original
 
         bboxes = torch.as_tensor(bboxes, dtype=torch.float32)
         target = {}
