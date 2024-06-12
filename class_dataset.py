@@ -7,9 +7,10 @@ from torch.utils.data import Dataset
 from torchvision.transforms import functional as F
 
 class ClassDataset(Dataset):
-    def __init__(self, root, transform = None):
+    def __init__(self, root, transform = None, num_keypoints = None):
         self.root = root
         self.transform = transform
+        self.num_keypoints = num_keypoints
         self.imgs_files = sorted(os.listdir(os.path.join(root, "images")))
         self.annotations_files = sorted(os.listdir(os.path.join(root, "annotations")))
 
@@ -34,7 +35,10 @@ class ClassDataset(Dataset):
             img = transformed['image']
             bboxes = transformed['bboxes']
             
-            keypoints_transformed_unflattened = np.reshape(np.array(transformed['keypoints']), (-1,2,2)).tolist()
+            keypoints_transformed_unflattened = np.reshape(
+                np.array(transformed['keypoints']),
+                (-1, self.num_keypoints, 2)
+            ).tolist()
 
             keypoints = []
             for o_idx, obj in enumerate(keypoints_transformed_unflattened):
