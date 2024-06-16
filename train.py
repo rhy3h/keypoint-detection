@@ -42,7 +42,7 @@ def start_train(
             torch.save(model.state_dict(), weight_path)
             print(f"saving weight '{weight_path}'")
 
-            last_weight_file_name = '{weight_name}_last.pth'
+            last_weight_file_name = f'{weight_name}_last.pth'
             last_weight_path = os.path.join(weight_root, last_weight_file_name)
             shutil.copy(weight_path, last_weight_path)
             print(f"saving weight '{last_weight_path}'")
