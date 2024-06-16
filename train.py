@@ -35,7 +35,7 @@ def start_train(
 
         if epoch % 5 == 0:
             now = datetime.now().strftime("%m%d_%H%M")
-            weight_file_name = f'{weight_name}_ep_{epoch}_{now}.pth'
+            weight_file_name = f'{weight_name}_{now}_ep_{epoch}.pth'
             weight_path = os.path.join(weight_root, weight_file_name)
 
             # Save model weights after training
