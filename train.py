@@ -33,15 +33,16 @@ def start_train(
         lr_scheduler.step()
         evaluate(model, data_loader_test, device)
 
-    now = datetime.now().strftime("%m%d_%H%M")
-    weight_file_name = f'{weight_name}_{now}.pth'
-    weight_path = os.path.join(weight_root, weight_file_name)
+        if epoch % 5 == 0:
+            now = datetime.now().strftime("%m%d_%H%M")
+            weight_file_name = f'{weight_name}_ep_{epoch}_{now}.pth'
+            weight_path = os.path.join(weight_root, weight_file_name)
 
-    # Save model weights after training
-    torch.save(model.state_dict(), weight_path)
-    print(f"saving weight '{weight_path}'")
+            # Save model weights after training
+            torch.save(model.state_dict(), weight_path)
+            print(f"saving weight '{weight_path}'")
 
-    last_weight_file_name = '{weight_name}_last.pth'
-    last_weight_path = os.path.join(weight_root, last_weight_file_name)
-    shutil.copy(weight_path, last_weight_path)
-    print(f"saving weight '{last_weight_path}'")
+            last_weight_file_name = '{weight_name}_last.pth'
+            last_weight_path = os.path.join(weight_root, last_weight_file_name)
+            shutil.copy(weight_path, last_weight_path)
+            print(f"saving weight '{last_weight_path}'")
