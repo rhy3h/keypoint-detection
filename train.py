@@ -33,9 +33,9 @@ def start_train(
         lr_scheduler.step()
         evaluate(model, data_loader_test, device)
 
-        if epoch % 5 == 0:
+        if (epoch + 1) % 5 == 0:
             now = datetime.now().strftime("%m%d_%H%M")
-            weight_file_name = f'{weight_name}_{now}_ep_{epoch}.pth'
+            weight_file_name = f'{weight_name}_{now}_ep_{epoch + 1}.pth'
             weight_path = os.path.join(weight_root, weight_file_name)
 
             # Save model weights after training
